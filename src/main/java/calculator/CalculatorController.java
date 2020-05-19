@@ -43,7 +43,11 @@ public class CalculatorController {
            }
            double number2 = Double.parseDouble(display.getText());
            double result = calculator.calculate(number1, number2, operator);
-           display.setText(String.format("%.0f", result));
+           if (result == (long) result) {
+               display.setText(String.format("%d", (long) result));
+           } else {
+               display.setText(String.format("%s", result));
+           }
            operator = "";
         } else {
             if (! operator.isEmpty()) {
@@ -53,6 +57,37 @@ public class CalculatorController {
             operator = operatorPressed;
             startNumber = true;
         }
+    }
+
+    @FXML
+    public void processNegative(ActionEvent event) {
+        String negativePressed = ((Button) event.getSource()).getText();
+        System.out.println(negativePressed);
+        if (!display.getText().equals("0")) {
+            if (display.getText().charAt(0) != '-') {
+                display.setText("-" + display.getText());
+            } else {
+                display.setText(display.getText().substring(1));
+            }
+        }
+    }
+
+    @FXML
+    public void processDot(ActionEvent event) {
+        String dotPressed = ((Button) event.getSource()).getText();
+        System.out.println(dotPressed);
+        if(!startNumber && !display.getText().contains(".")) {
+            display.setText(display.getText() + dotPressed);
+        }
+    }
+
+    @FXML
+    public void processClear(ActionEvent event) {
+        String clearPressed = ((Button) event.getSource()).getText();
+        System.out.println(clearPressed);
+        startNumber = true;
+        operator = "";
+        display.setText("0");
     }
 
 }
